@@ -3,32 +3,71 @@ const inquirer = require("inquirer");
 const mysql = require("mysql");
 require("console.table");
 
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
-// Connect to database
 const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    // Your MySQL username,
-    user: 'root',
-    // Your MySQL password
-    password: 'password',
-    database: 'employeesDB'
+  { 
+    host: "localhost",
+    port: "3301",
+    user: "root",
+    password: "password",
+    database: "employeesDB"
   },
   console.log('Connected to the employee database.')
 );
 
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Hello World'
-  });
+db.connect(function (err) {
+  if (err) throw err;
+  
+  startPrompt();
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+function startPrompt(){
+  inquirer.prompt([
+  {
+    type: 'list',
+    name:'userChoice',
+    message: 'What would you like to do?',
+    choices: [
+    'Add Role',
+    'Add Department',
+    'Add Employee',
+    'View All Employees',
+    'View Employees By Department',
+    'Update Employee Role',
+    'Remove Employee',
+    'Exit'
+    ]
+      
+  }
+]).then((res)=>{
+  console.log(res.userChoice);
+  switch(res.userChoice){
+    case 'Add Role':
+      viewAllEmployees();
+      break;
+    case 'Add Department':
+      viewEmployeesByDepartment();
+      break;
+    case 'Add Employee':
+      addEmployee();
+      break;
+    case 'View All Employees':
+      removeEmployee();
+      break;
+    case 'View Employees By Department':
+      updateEmployeeRole();
+      break;
+    case 'Update Employee Role':
+      addRole();
+      break;
+    case 'Remove Employee':
+      addDepartment();
+      break;
+    case 'Exit':
+      connection.end();
+      break;
+    }
+    
+  }).catch((err)=>{
+if(err)throw err;
 });
+}
