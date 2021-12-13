@@ -128,3 +128,21 @@ function addToRole(department){
       });
   });
 }
+
+function addDepartment(){
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Department Name: "
+      }
+    ]).then((res)=>{
+    let query = `INSERT INTO department SET ?`;
+    connection.query(query, {name: res.name},(err, res)=>{
+      if(err) throw err;
+      //console.log(res);
+      firstPrompt();
+    });
+  });
+}
