@@ -68,35 +68,121 @@ function startPrompt(){
 }
 
 function viewDepartment() {
-  // select from the db
+  
   let query = "SELECT * FROM department";
   connection.query(query, function(err, res) {
     if (err) throw err;
     console.table(res);
     startScreen();
   });
-  // show the result to the user (console.table)
+  
 }
 
 function viewRoles() {
-  // select from the db
+  
   let query = "SELECT * FROM role";
   connection.query(query, function(err, res) {
     if (err) throw err;
     console.table(res);
     startScreen();
   });
-  // show the result to the user (console.table)
+  
 }
 
 function viewEmployees() {
-  // select from the db
+  
   let query = "SELECT * FROM employee";
   connection.query(query, function(err, res) {
     if (err) throw err;
     console.table(res);
     startScreen();
   });
-  // show the result to the user (console.table)
+  
+}
+
+function addDepartment() {
+
+
+  inquirer.prompt({
+    
+      type: "input",
+      message: "What is the name of the department?",
+      name: "deptName"
+
+  }).then(function(answer){
+
+
+
+      connection.query("INSERT INTO department (name) VALUES (?)", [answer.deptName] , function(err, res) {
+          if (err) throw err;
+          console.table(res)
+          startScreen()
+  })
+  })
+}
+
+function addRole() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What's the name of the role?",
+        name: "roleName"
+      },
+      {
+        type: "input",
+        message: "What is the salary for this role?",
+        name: "salaryTotal"
+      },
+      {
+        type: "input",
+        message: "What is the department id number?",
+        name: "deptID"
+      }
+    ])
+    .then(function(answer) {
+
+
+      connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptID], function(err, res) {
+        if (err) throw err;
+        console.table(res);
+        startScreen();
+      });
+    });
+}
+
+function addEmployee() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        message: "What's the first name of the employee?",
+        name: "FirstName"
+      },
+      {
+        type: "input",
+        message: "What's the last name of the employee?",
+        name: "LastName"
+      },
+      {
+        type: "input",
+        message: "What is the employee's role id number?",
+        name: "roleID"
+      },
+      {
+        type: "input",
+        message: "What is the manager id number?",
+        name: "managerID"
+      }
+    ])
+    .then(function(answer) {
+
+      
+      connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.eeFirstName, answer.eeLastName, answer.roleID, answer.managerID], function(err, res) {
+        if (err) throw err;
+        console.table(res);
+        startScreen();
+      });
+    });
 }
 
