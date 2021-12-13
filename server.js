@@ -13,18 +13,12 @@ const connection = mysql.createConnection(
   },
   console.log('Connected to the employee database.')
 );
-
-connection.connect(function (err) {
-  if (err) throw err;
   
-  startPrompt();
-});
+startPrompt();
 
 function startPrompt(){
   inquirer.prompt({
-    type: 'list',
-    name:'userChoice',
-    message: 'What would you like to do?',
+    type: "list",
     choices: [
       "View departments",
       "View roles",
@@ -34,7 +28,9 @@ function startPrompt(){
       "Add employee",
       "Update employee role",
       "Quit"
-    ]   
+    ],
+    message: "What would you like to do?",
+    name: "option"   
   })
   .then(function(result) {
     console.log("You entered: " + result.option);
@@ -47,7 +43,7 @@ function startPrompt(){
         viewRole();
         break;
       case "View employees":
-        viewEmployee();
+        viewEmployees();
         break;
       case "Add department":
         addDepartment();
