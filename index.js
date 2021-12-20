@@ -93,7 +93,7 @@ function viewDepartments() {
       console.log("\n");
       console.table(departments);
     })
-    .then(() => loadMainPrompts());
+    .then(() => startPrompt());
 }
 
 function viewRoles() {

@@ -27,27 +27,39 @@ class DB {
   }
 
   updateEmployeeRole(employeeId, roleId) {
-    return this.connection.promise().query();
+    return this.connection
+      .promise()
+      .query(`UPDATE employee SET role_id = ? WHERE id = ?`);
   }
 
   updateEmployeeManager(employeeId, managerId) {
-    return this.connection.promise().query();
+    return this.connection
+      .promise()
+      .query(`UPDATE employee SET manager_id = ? WHERE id = ?`);
   }
 
   findAllRoles() {
-    return this.connection.promise().query();
+    return this.connection
+      .promise()
+      .query(
+        `SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department ON role.department_id = department.id`
+      );
   }
 
   createRole(role) {
-    return this.connection.promise().query();
+    return this.connection
+      .promise()
+      .query(`INSERT INTO role(title, salary, department_id) VALUES(?,?,?)`);
   }
 
   findAllDepartments() {
-    return this.connection.promise().query();
+    return this.connection.promise().query("SELECT * FROM department");
   }
 
   createDepartment(department) {
-    return this.connection.promise().query();
+    return this.connection
+      .promise()
+      .query(`INSERT INTO department(name) VALUES(?)`);
   }
 }
 
