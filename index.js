@@ -97,21 +97,23 @@ function viewDepartments() {
 }
 
 function viewRoles() {
-  let query = "SELECT * FROM role";
-  connection.query(query, function (err, res) {
-    if (err) throw err;
-    console.table(res);
-    startPrompt();
-  });
+  db.findAllRoles()
+    .then(([rows]) => {
+      let roles = rows;
+      console.log("\n");
+      console.table(roles);
+    })
+    .then(() => startPrompt());
 }
 
 function viewEmployees() {
-  let query = "SELECT * FROM employee";
-  connection.query(query, function (err, res) {
-    if (err) throw err;
-    console.table(res);
-    startPrompt();
-  });
+  db.findAllEmployees()
+    .then(([rows]) => {
+      let employees = rows;
+      console.log("\n");
+      console.table(employees);
+    })
+    .then(() => startPrompt());
 }
 
 function addDepartment() {
