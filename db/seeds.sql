@@ -30,4 +30,14 @@ VALUES
     ('Kunal', 'Singh', 5, NULL),
     ('Malia', 'Brown', 6, 5),
     ('Sarah', 'Lourd', 7, NULL),
-    ('Tom', 'Allen', 8, 7);
+    ('Tom', 'Allen', 8, 7),
+    ('Ronald', 'Firbank', 1, 1),
+    ('Virginia', 'Woolf', 1, 1),
+    ('Piers', 'Gaveston', 1, 3),
+    ('Charles', 'LeRoi', 2, 1),
+    ('Katherine', 'Mansfield', 2, 1),
+    ('Dora', 'Carrington', 3, 5),
+    ('Edward', 'Bellamy', 3, 4),
+    ('Montague', 'Summers', 3, 1),
+    ('Octavia', 'Butler', 3, 1),
+    ('Unica', 'Zurn', 2, 1);
