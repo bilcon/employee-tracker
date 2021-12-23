@@ -190,7 +190,7 @@ function addEmployee() {
   ]).then(function (answer) {
     connection.query(
       "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
-      [answer.eeFirstName, answer.eeLastName, answer.roleID, answer.managerID],
+      [answer.FirstName, answer.LastName, answer.roleID, answer.managerID],
       function (err, res) {
         if (err) throw err;
         console.table(res);
@@ -216,7 +216,7 @@ function updateEmployee() {
   ]).then(function (answer) {
     connection.query(
       "UPDATE employee SET role_id=? WHERE first_name= ?",
-      [answer.updateRole, answer.eeUpdate],
+      [answer.updateRole, answer.employeeUpdate],
       function (err, res) {
         if (err) throw err;
         console.table(res);
