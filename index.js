@@ -2,6 +2,7 @@ const db = require("./db");
 const { prompt } = require("inquirer");
 const logo = require("asciiart-logo");
 require("console.table");
+const connection = require("./db/connection");
 
 startPrompt();
 
@@ -59,10 +60,10 @@ function startPrompt() {
     // CASE SHOULD ALL BE SCREAMMING CASE
     switch (res.option) {
       case "VIEW_DEPARTMENTS":
-        viewDepartment();
+        viewDepartments();
         break;
       case "VIEW_ROLES":
-        viewRole();
+        viewRoles();
         break;
       case "VIEW_EMPLOYEES":
         viewEmployees();
@@ -71,10 +72,10 @@ function startPrompt() {
         addDepartment();
         break;
       case "ADD_ROLE":
-        addRoles();
+        addRole();
         break;
       case "ADD_EMPLOYEE":
-        addEmployees();
+        addEmployee();
         break;
       case "UPDATE_EMPLOYEE_ROLE":
         updateEmployee();
@@ -93,7 +94,7 @@ function viewDepartments() {
       console.log("\n");
       console.table(departments);
     })
-    .then(() => loadMainPrompts());
+    .then(() => startPrompt());
 }
 
 function viewRoles() {
@@ -117,125 +118,112 @@ function viewEmployees() {
 }
 
 function addDepartment() {
-  inquirer
-    .prompt({
-      type: "input",
-      message: "What is the name of the department?",
-      name: "deptName",
-    })
-    .then(function (answer) {
-      connection.query(
-        "INSERT INTO department (name) VALUES (?)",
-        [answer.deptName],
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          startPrompt();
-        }
-      );
-    });
+  prompt({
+    type: "input",
+    message: "What is the name of the department?",
+    name: "deptName",
+  }).then(function (answer) {
+    connection.query(
+      "INSERT INTO department (name) VALUES (?)",
+      [answer.deptName],
+      function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startPrompt();
+      }
+    );
+  });
 }
 
 function addRole() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "What's the name of the role?",
-        name: "roleName",
-      },
-      {
-        type: "input",
-        message: "What is the salary for this role?",
-        name: "salaryTotal",
-      },
-      {
-        type: "input",
-        message: "What is the department id number?",
-        name: "deptID",
-      },
-    ])
-    .then(function (answer) {
-      connection.query(
-        "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
-        [answer.roleName, answer.salaryTotal, answer.deptID],
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          startPrompt();
-        }
-      );
-    });
+  prompt([
+    {
+      type: "input",
+      message: "What's the name of the role?",
+      name: "roleName",
+    },
+    {
+      type: "input",
+      message: "What is the salary for this role?",
+      name: "salaryTotal",
+    },
+    {
+      type: "input",
+      message: "What is the department id number?",
+      name: "deptID",
+    },
+  ]).then(function (answer) {
+    connection.query(
+      "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)",
+      [answer.roleName, answer.salaryTotal, answer.deptID],
+      function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startPrompt();
+      }
+    );
+  });
 }
 
 function addEmployee() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "What's the first name of the employee?",
-        name: "FirstName",
-      },
-      {
-        type: "input",
-        message: "What's the last name of the employee?",
-        name: "LastName",
-      },
-      {
-        type: "input",
-        message: "What is the employee's role id number?",
-        name: "roleID",
-      },
-      {
-        type: "input",
-        message: "What is the manager id number?",
-        name: "managerID",
-      },
-    ])
-    .then(function (answer) {
-      connection.query(
-        "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
-        [
-          answer.eeFirstName,
-          answer.eeLastName,
-          answer.roleID,
-          answer.managerID,
-        ],
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          startPrompt();
-        }
-      );
-    });
+  prompt([
+    {
+      type: "input",
+      message: "What's the first name of the employee?",
+      name: "FirstName",
+    },
+    {
+      type: "input",
+      message: "What's the last name of the employee?",
+      name: "LastName",
+    },
+    {
+      type: "input",
+      message: "What is the employee's role id number?",
+      name: "roleID",
+    },
+    {
+      type: "input",
+      message: "What is the manager id number?",
+      name: "managerID",
+    },
+  ]).then(function (answer) {
+    connection.query(
+      "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
+      [answer.FirstName, answer.LastName, answer.roleID, answer.managerID],
+      function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startPrompt();
+      }
+    );
+  });
 }
 
 function updateEmployee() {
-  inquirer
-    .prompt([
-      {
-        type: "input",
-        message: "Which employee would you like to update?",
-        name: "employeeUpdate",
-      },
+  prompt([
+    {
+      type: "input",
+      message: "Which employee would you like to update?",
+      name: "employeeUpdate",
+    },
 
-      {
-        type: "input",
-        message: "What do you want to update to?",
-        name: "updateRole",
-      },
-    ])
-    .then(function (answer) {
-      connection.query(
-        "UPDATE employee SET role_id=? WHERE first_name= ?",
-        [answer.updateRole, answer.eeUpdate],
-        function (err, res) {
-          if (err) throw err;
-          console.table(res);
-          startPrompt();
-        }
-      );
-    });
+    {
+      type: "input",
+      message: "What do you want to update to?",
+      name: "updateRole",
+    },
+  ]).then(function (answer) {
+    connection.query(
+      "UPDATE employee SET role_id=? WHERE first_name= ?",
+      [answer.updateRole, answer.employeeUpdate],
+      function (err, res) {
+        if (err) throw err;
+        console.table(res);
+        startPrompt();
+      }
+    );
+  });
 }
 
 function quit() {
