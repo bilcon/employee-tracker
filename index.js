@@ -2,6 +2,7 @@ const db = require("./db");
 const { prompt } = require("inquirer");
 const logo = require("asciiart-logo");
 require("console.table");
+const connection = require("./db/connection");
 
 startPrompt();
 
